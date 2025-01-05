@@ -1,66 +1,69 @@
 import React, { useEffect, useState } from "react";
 
+const ButtonComponent = ({ buttonLabel, handleClick }) => {
+  return (
+    <button
+      className="border rounded-md px-4 py-2 text-white text-lg font-semibold bg-black"
+      onClick={handleClick}
+    >
+      {buttonLabel}
+    </button>
+  );
+};
+
 const GenerateColor = () => {
   const [color, setColor] = useState("#000");
   const [typeOfColor, setTypeOfColor] = useState("hex");
 
-  const randomNumberGeneraterOfColor = (lenght) => {
-    return Math.floor(Math.random() * lenght);
+  const randomNumberForColor = (length) => {
+    return Math.floor(Math.random() * length);
   };
 
-  const handleGenerateRandomHexColor = () => {
+  const handleRandomHexColorGenerater = () => {
     const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
     let hexColor = "#";
-
     for (let i = 0; i < 6; i++) {
-      hexColor += hex[randomNumberGeneraterOfColor(hex.length)];
+      hexColor += hex[randomNumberForColor(hex.length)];
     }
-
     setColor(hexColor);
   };
 
-  const handleGenerateRandomRgbColor = () => {
-    const r = randomNumberGeneraterOfColor(255);
-    const g = randomNumberGeneraterOfColor(255);
-    const b = randomNumberGeneraterOfColor(255);
+  const handleRandomRgbColorGenerater = () => {
+    const r = randomNumberForColor(255);
+    const g = randomNumberForColor(255);
+    const b = randomNumberForColor(255);
 
-    setColor(`rgb(${r}, ${g},${b})`);
+    setColor(`rgb(${r},${g},${b})`);
   };
 
   useEffect(() => {
     typeOfColor === "hex"
-      ? handleGenerateRandomHexColor()
-      : handleGenerateRandomRgbColor();
+      ? handleRandomHexColorGenerater()
+      : handleRandomRgbColorGenerater();
   }, [typeOfColor]);
 
   return (
-    <div style={{ backgroundColor: color }} className="min-h-screen">
-      <div className="flex flex-col items-center justify-center gap-5 min-h-screen">
-        <div className="flex-row">
-          <button
-            className="px-4 py-2 border rounded-md bg-black text-white cursor-pointer"
-            onClick={() => setTypeOfColor("hex")}
-          >
-            Generate hex color
-          </button>
-          <button
-            className="px-4 py-2 border rounded-md bg-black text-white cursor-pointer"
-            onClick={() => setTypeOfColor("rgb")}
-          >
-            Generate rgb color
-          </button>
-          <button
-            className="px-4 py-2 border rounded-md bg-black text-white cursor-pointer"
-            onClick={
+    <div className="h-screen w-screen" style={{ backgroundColor: color }}>
+      <div className="min-h-screen flex flex-col gap-10 items-center justify-center">
+        <div className="flex gap-10 ">
+          <ButtonComponent
+            buttonLabel="Generate hex color"
+            handleClick={() => setTypeOfColor("hex")}
+          />
+          <ButtonComponent
+            buttonLabel="Generate rgb color"
+            handleClick={() => setTypeOfColor("rgb")}
+          />
+          <ButtonComponent
+            buttonLabel="Generate random color"
+            handleClick={
               typeOfColor === "hex"
-                ? handleGenerateRandomHexColor
-                : handleGenerateRandomRgbColor
+                ? handleRandomHexColorGenerater
+                : handleRandomRgbColorGenerater
             }
-          >
-            Generate random color
-          </button>
+          />
         </div>
-        <div className="flex flex-col text-4xl text-white font-semibold items-center gap-10">
+        <div className="flex flex-col text-white text-2xl gap-10 font-bold items-center bg-black p-4 rounded-md">
           <p>{typeOfColor === "hex" ? "HEX" : "RGB"}</p>
           <p>{color}</p>
         </div>
